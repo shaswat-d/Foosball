@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block content %}
+<table class="table">
+	<thead>
+		<tr class="info">
+			<th>Team</th>
+			<th>Points</th>
+		</tr>
+	</thead>
+	{% for team in teams %}
+	<tbody>
+		<tr>
+		<td>
+			<a href="{% url 'team-detail' team.id %}">{{ team.player1 }}, {{ team.player2 }}</a> 
+		</td>
+		<td>
+			{% if 'TT' in request.path %}
+			{{ team.tt_points }}
+			{% else %}
+			{{ team.foosball_points }}
+			{% endif %}
+		</td>
+		</tr>
+	</tbody>
+{% endfor %}
+
+{% endblock %}
