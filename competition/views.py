@@ -5,7 +5,13 @@ from django.db.models import Q
 from django.urls import reverse_lazy, reverse
 
 from .models import Team, Competition, Match
-from .forms import CreateTeamForm, CreateCompForm, CreateMatchForm
+from .forms import CreatePlayerForm, CreateTeamForm, CreateCompForm, CreateMatchForm
+
+
+class createPlayerView(CreateView):
+    template_name = "player/form.html"
+    form_class = CreatePlayerForm
+    success_url = reverse_lazy("home")
 
 
 class createTeamView(CreateView):
@@ -50,17 +56,17 @@ def createMatch(request):
             print(match.game)
             if match.team1_score > match.team2_score:
                 if match.game == 'TT':
-                    match.team1.tt_points += 3
+                    match.team1.tt_points += 1
                     match.team2.tt_points -= 1
                 else:
-                    match.team1.foosball_points += 3
+                    match.team1.foosball_points += 1
                     match.team2.foosball_points -= 1
             elif match.team1_score < match.team2_score:
                 if match.game == 'TT':
-                    match.team2.tt_points += 3
+                    match.team2.tt_points += 1
                     match.team1.tt_points -= 1
                 else:
-                    match.team2.foosball_points += 3
+                    match.team2.foosball_points += 1
                     match.team1.foosball_points -= 1
             match.team1.save()
             match.team2.save()
@@ -82,11 +88,12 @@ def teamDetail(request, pk):
 
 def showLeaderboard(request, type):
     if type == 'FS' or type == 'foosball':
-        teams = Team.objects.all().order_by('-foosball_points')[:100]
+        teams = Team.objects.all().order_by('-foosball_points')[:15]
     else:
         teams = Team.objects.all().order_by('-tt_points')[:10]
     return render(request, 'leaderboard.html', {'teams': teams})
 
 
 def home(request):
-    return HttpResponse("Welcome to the Foosball Tournament!")
+    # return HttpResponse("Welcome to the Foosball Tournament!")
+    return render(request, 'home.html', {})

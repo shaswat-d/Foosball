@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'home', home, name="home"),
     url(r'team/new', createTeamView.as_view(), name='newteam'),
+    url(r'player/new', createPlayerView.as_view(), name='newplayer'),
     url('leaderboard/(?P<type>\w+)', showLeaderboard, name='leaderboard'),
     url('match/new', createMatch, name='newmatch'),
     url('team/(?P<pk>\d+)', teamDetail, name='team-detail'),
